@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Pokedex</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <h1>Pokedex</h1>
@@ -29,7 +30,22 @@
             <option value="fairy">Fairy</option>
             <option value="flying">Flying</option>
         </select>
-        <button id="filter">Filter by type</button>
+        <button id="filter-type">Filter by type</button>
+    </div>
+    <div>
+        <select name="region" id="region">
+            <option value="all">All</option>
+            <option value="Kanto">Kanto</option>
+            <option value="Johto">Johto</option>
+            <option value="Hoenn">Hoenn</option>
+            <option value="Sinnoh">Sinnoh</option>
+            <option value="Unova">Unova</option>
+            <option value="Kalos">Kalos</option>
+            <option value="Alola">Alola</option>
+            <option value="Galar">Galar</option>
+            <option value="Paldea">Paldea</option>
+        </select>
+        <button id="filter-region">Filter by Region</button>
     </div>
     <br>
     <input type="text" id="search" placeholder="Search by name">
