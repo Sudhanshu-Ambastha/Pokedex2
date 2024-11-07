@@ -27,12 +27,12 @@ function createCard(pokemon) {
     card.innerHTML = `
         <div class="card-front">
             <div class="id">${pokemon.id}</div>
-            <img src="https://projectpokemon.org/images/normal-sprite/${pokemon.name}.gif" alt="${pokemon.name}">
+            <img src="${pokemon.sprites.front_default}" alt="${pokemon.name}" onerror="handleImageErrorFront(this);" />
             <div class="name">${pokemon.name}</div>
             <div class="type">${pokemon.types[0].type.name}</div>
         </div>
         <div class="card-back">
-            <img src="https://projectpokemon.org/images/sprites-models/normal-back/${pokemon.name}.gif" alt="${pokemon.name}">
+            <img src="${pokemon.sprites.back_default}" alt="${pokemon.name}" onerror="handleImageErrorBack(this);" />
             <div class="name">${pokemon.name}</div>
             <div class="ability">${pokemon.abilities[0].ability.name}</div>
         </div>
@@ -117,9 +117,14 @@ async function fetchPokemon(selectedRegion) {
         [regionStart, regionEnd] = regionRanges[selectedRegion];
     }
 
+    // Ensure the container and allPokemon array are cleared before each new fetch
+    container.innerHTML = "";  
+    allPokemon = [];  
+
+    // Fetch Pokémon based on region range
     for (let i = regionStart; i <= regionEnd; i++) {
         let pokemon = await fetchPokemonData(i);
-        allPokemon.push(pokemon); 
+        allPokemon.push(pokemon);
         let card = createCard(pokemon);
         container.appendChild(card);
     }
@@ -132,7 +137,5 @@ fetchPokemon(selectedRegion);
 // Listen for changes in the region selection and update the Pokémon list accordingly
 regionSelect.addEventListener('change', (event) => {
     const selectedRegion = event.target.value;
-    allPokemon = [];  
-    container.innerHTML = "";  
     fetchPokemon(selectedRegion);  
 });
