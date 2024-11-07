@@ -6,6 +6,7 @@ const typeSelect = document.getElementById("type");
 const regionSelect = document.getElementById("region");
 
 let allPokemon = [];
+let fetchedPokemonIds = new Set();  // Set to keep track of fetched Pokémon IDs
 
 // Region mapping based on Pokémon IDs
 const regionRanges = {
@@ -27,12 +28,12 @@ function createCard(pokemon) {
     card.innerHTML = `
         <div class="card-front">
             <div class="id">${pokemon.id}</div>
-            <img src="${pokemon.sprites.front_default}" alt="${pokemon.name}" onerror="handleImageErrorFront(this);" />
+            <img src="${pokemon.sprites.front_default}" alt="${pokemon.name}">
             <div class="name">${pokemon.name}</div>
             <div class="type">${pokemon.types[0].type.name}</div>
         </div>
         <div class="card-back">
-            <img src="${pokemon.sprites.back_default}" alt="${pokemon.name}" onerror="handleImageErrorBack(this);" />
+            <img src="${pokemon.sprites.back_default}" alt="${pokemon.name}">
             <div class="name">${pokemon.name}</div>
             <div class="ability">${pokemon.abilities[0].ability.name}</div>
         </div>
@@ -120,11 +121,18 @@ async function fetchPokemon(selectedRegion) {
     // Ensure the container and allPokemon array are cleared before each new fetch
     container.innerHTML = "";  
     allPokemon = [];  
+    fetchedPokemonIds.clear();  // Clear the set of fetched IDs
 
     // Fetch Pokémon based on region range
     for (let i = regionStart; i <= regionEnd; i++) {
+        // Skip if this Pokémon has already been fetched
+        if (fetchedPokemonIds.has(i)) {
+            continue;
+        }
+
         let pokemon = await fetchPokemonData(i);
         allPokemon.push(pokemon);
+        fetchedPokemonIds.add(i);  // Add the ID to the set of fetched IDs
         let card = createCard(pokemon);
         container.appendChild(card);
     }
